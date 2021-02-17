@@ -5,16 +5,38 @@ var taskIdCounter = 0;
 var pageContentEl = document.querySelector("#page-content");
 
 function taskButtonHandler(event) {
-    console.log(event.target);
-    if (event.target.matches(".delete-btn")) {
+    var targetEl = event.target;
+    
+    if (targetEl.matches('.edit-btn')) {
+        var taskId = targetEl.getAttribute("data-task-id");
+        editTask(taskId);
+    }
+
+    else if (targetEl.matches(".delete-btn")) {
         var taskId = event.target.getAttribute("data-task-id");
         deleteTask(taskId);
-    }
+    };
 };
 
 // other logic...
 
 pageContentEl.addEventListener("click", taskButtonHandler);
+
+function editTask(taskId) {
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']")
+
+    var taskName = taskSelected.querySelector("h3.task-name").textContent;
+
+    var taskType = taskSelected.querySelector("span.task-type").textContent;
+
+
+    document.querySelector("input[name='task-name']").value = taskName;
+    document.querySelector("select[name='task-type']").value = taskType;
+
+    document.querySelector("#save-task").textContent = "Save Task";
+
+    formEl.setAttribute("data-task-id", taskId);
+};
 
 function deleteTask(taskId) {
     var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']")
